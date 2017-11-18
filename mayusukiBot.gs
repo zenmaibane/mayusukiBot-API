@@ -1,18 +1,10 @@
 var twitter_base_url = "https://api.twitter.com/1.1/";
 
-
-function doGet(e){
-  var name = e.parameter.name;
-  var jsonData = {"text":"佐久間まゆ♡"}
-  var content = createJsonContent(jsonData);
-  return content;
-}
-
 function run(){
   auth();
-  getMayusukiCount();
   //  var payload = {status:"投稿内容"}
 //  postAccessTwitter("statuses/update", payload);
+  addMayusukiData();
 }
 
 function createJsonContent(jsonData){
@@ -22,18 +14,18 @@ function createJsonContent(jsonData){
   return content;
 }
 
-function getMayusukiDB(){
+function getMayusukiSheet(){
   return SpreadsheetApp.openById('1JEmcFhzK65JXkniFlGrnwQO7uHcClYSFIBsxLBNFPRY');
 }
 
-function writeMayusukiDB(){
-  var spreadsheet = getMayusukiDB();
+function addMayusukiData(){
+  var spreadsheet = getMayusukiSheet();
   var sheet = spreadsheet.getActiveSheet();
+  var data = getYesterdayMayusukiData();
+  sheet.getRange(sheet.getLastRow()+1,1,data.length,data[0].length).setValues(data);
 }
 
-
-
-function getMayusukiCount(){
+function getYesterdayMayusukiData(){
   var today = new Date();
   var yesterdayBegin = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
   var yesterdayEnd = new Date(yesterdayBegin.getTime());
@@ -58,11 +50,15 @@ function getMayusukiCount(){
     searchPayload.max_id = response.statuses[twiSearchCountMax-1].id_str;
     mayusukiCount += twiSearchCountMax-1;
   }
-  return mayusukiCount;
+  return [[formatDate4DB(yesterdayBegin),mayusukiCount]];
 }
 
 function formatDate4Twitter(date){
   return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "_" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "_JST";
+}
+
+function formatDate4DB(date){
+  return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
 }
 
 function getTwitterService(){
@@ -124,5 +120,11 @@ function encodeToRfc3986(str){
     return escape(char);
   }).replace(/\*/g, "%2A");
 }
+
+//function getLastRow(sheet,column) {
+//  var range = sheet.getRange(column+":"+column).getValues();
+//  var lastRow = range.filter(String).length -1;//テーブルヘッダ分マイナスする
+//  return lastRow
+//}
           
           
