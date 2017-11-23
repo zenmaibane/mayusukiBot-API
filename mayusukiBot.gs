@@ -17,11 +17,14 @@ function createMayusukiChartWeekly(){
   var lastRow = sheet.getLastRow();
   var range = sheet.getRange("A"+(lastRow-6)+":"+"B"+lastRow);
   var chart = sheet.newChart()
-              .addRange(range)
               .setChartType(Charts.ChartType.LINE)
-              .setPosition(5,10,0,0)
-              .setOption("title","今週のまゆすき")
-              .setOption("vAxes",[{"title":"ツイート数"}]);
+              .addRange(range)
+              .setPosition(5,10,5,0)
+              .setOption("vAxes",[{"title":"ツイート数"}]) 
+              .setOption('legend.position', "none")
+              .asLineChart();
+  chart.setXAxisTitle("日付")
+  .setTitle("まゆすきWeekly");
   sheet.insertChart(chart.build());
 }
 
@@ -33,11 +36,11 @@ function createJsonContent(jsonData){
 }
 
 function getMayusukiSheet(){
-  return SpreadsheetApp.openById('1JEmcFhzK65JXkniFlGrnwQO7uHcClYSFIBsxLBNFPRY');
+  return SpreadsheetApp.openById('1f8WqvUcADdTFOeR0Urk4pvUHdnap9-SABSgkQ6Z807A');
 }
 
 function getYesterdayMayusukiData(){
-  var today = new Date(2017,10, 23);
+  var today = new Date();
   var yesterdayBegin = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
   var yesterdayEnd = new Date(yesterdayBegin.getTime());
   yesterdayBegin.setHours(0,0,0,0)
@@ -61,8 +64,7 @@ function getYesterdayMayusukiData(){
     searchPayload.max_id = response.statuses[twiSearchCountMax-1].id_str;
     mayusukiCount += twiSearchCountMax-1;
   }
-  var arrDay = new Array("日", "月", "火", "水", "木", "金", "土");
-  return [[formatDate4DB(yesterdayBegin), arrDay[yesterdayBegin.getDay()] ,mayusukiCount]];
+  return [[formatDate4DB(yesterdayBegin), mayusukiCount]];
 }
 
 function formatDate4Twitter(date){
