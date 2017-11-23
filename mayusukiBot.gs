@@ -7,8 +7,13 @@ function addMayusukiData(){
   auth();
   var data = getYesterdayMayusukiData();
   sheet.getRange(sheet.getLastRow()+1,1,data.length,data[0].length).setValues(data);
+  
+  var payload = {
+   status:"text",
+   media_ids:image_upload["media_id_string"]
+ }
+ postAccessTwitter("statuses/update", payload);
 }
-
 
 // 日曜日に発動するトリガー
 function createMayusukiChartWeekly(){
@@ -29,11 +34,12 @@ function createMayusukiChartWeekly(){
        .setDataTable(weeklyData)
        .setOption('legend.position', 'none')
        .setOption('title', "まゆすきWeekly")
+       .setOption('chartArea', {left:100,width:'70%',height:'75%'})
        .setXAxisTitle("日付")
        .setYAxisTitle("Tweet数")
+       .setDimensions(500, 400)
        .build()
        .getBlob();
-  
   var chartBase64 = Utilities.base64Encode(chart.getBytes());
   var service = getTwitterService();
   var image_upload = JSON.parse(service.fetch("https://upload.twitter.com/1.1/media/upload.json", {"method":"POST", "payload":{"media_data":chartBase64}}));
