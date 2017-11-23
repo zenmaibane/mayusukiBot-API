@@ -16,16 +16,32 @@ function createMayusukiChartWeekly(){
   var sheet = spreadsheet.getActiveSheet();
   var lastRow = sheet.getLastRow();
   var range = sheet.getRange("A"+(lastRow-6)+":"+"B"+lastRow);
-  var chart = sheet.newChart()
-              .setChartType(Charts.ChartType.LINE)
-              .addRange(range)
-              .setPosition(5,10,5,0)
-              .setOption("vAxes",[{"title":"ツイート数"}]) 
-              .setOption('legend.position', "none")
-              .asLineChart();
-  chart.setXAxisTitle("日付")
-  .setTitle("まゆすきWeekly");
-  sheet.insertChart(chart.build());
+  var mayusukiData = range.getValues();
+  var weeklyData = Charts.newDataTable()
+      .addColumn(Charts.ColumnType.STRING, "日付")
+      .addColumn(Charts.ColumnType.NUMBER, "Tweet数");
+  for(var i = 0; i < mayusukiData.length;i++){
+      var dateStr = (mayusukiData[i][0].getMonth()+1) + "/" + mayusukiData[i][0].getDate();
+      weeklyData.addRow([dateStr, mayusukiData[i][1]]); 
+  }
+  weeklyData.build();
+  var chart = Charts.newLineChart()
+       .setDataTable(weeklyData)
+       .setOption('legend.position', 'none')
+       .setOption('title', "まゆすきWeekly")
+       .setXAxisTitle("日付")
+       .setYAxisTitle("Tweet数")
+       .build()
+       .getBlob();
+  
+  var chartBase64 = Utilities.base64Encode(chart.getBytes());
+  var service = getTwitterService();
+  var image_upload = JSON.parse(service.fetch("https://upload.twitter.com/1.1/media/upload.json", {"method":"POST", "payload":{"media_data":chartBase64}}));
+  var payload = {
+   status:"text",
+   media_ids:image_upload["media_id_string"]
+ }
+ postAccessTwitter("statuses/update", payload);
 }
 
 function createJsonContent(jsonData){
