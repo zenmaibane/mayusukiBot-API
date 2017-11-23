@@ -1,18 +1,26 @@
 var twitter_base_url = "https://api.twitter.com/1.1/";
 
 //毎日発動するトリガー
+function routine(){
+ var spreadsheet = getMayusukiSheet();
+ var sheet = spreadsheet.getActiveSheet();
+ addMayusukiData()
+ var lastRow = sheet.getLastRow();
+ var lastData = sheet.getRange("A"+(lastRow-1)+":"+"B"+lastRow).getValues();
+ var tweetNumSub = lastData[1][1] - lastData[0][1];
+ var dateStr = lastData[1][0].getMonth()+1 + "/" + lastData[1][0].getDate();
+ var payload = {
+   status:dateStr + "のまゆすきツイート数は" + lastData[1][1] + "です．(前日比" + tweetNumSub + ")"
+ }
+ postAccessTwitter("statuses/update", payload);
+}
+
 function addMayusukiData(){
   var spreadsheet = getMayusukiSheet();
   var sheet = spreadsheet.getActiveSheet();
   auth();
   var data = getYesterdayMayusukiData();
   sheet.getRange(sheet.getLastRow()+1,1,data.length,data[0].length).setValues(data);
-  
-  var payload = {
-   status:"text",
-   media_ids:image_upload["media_id_string"]
- }
- postAccessTwitter("statuses/update", payload);
 }
 
 // 日曜日に発動するトリガー
@@ -44,7 +52,7 @@ function createMayusukiChartWeekly(){
   var service = getTwitterService();
   var image_upload = JSON.parse(service.fetch("https://upload.twitter.com/1.1/media/upload.json", {"method":"POST", "payload":{"media_data":chartBase64}}));
   var payload = {
-   status:"text",
+   status:"今週のまゆすき",
    media_ids:image_upload["media_id_string"]
  }
  postAccessTwitter("statuses/update", payload);
