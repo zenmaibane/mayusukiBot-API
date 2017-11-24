@@ -8,6 +8,9 @@ function routine(){
  var lastRow = sheet.getLastRow();
  var lastData = sheet.getRange("B"+(lastRow-1)+":"+"C"+lastRow).getValues();
  var tweetNumSub = lastData[1][1] - lastData[0][1];
+ if(tweetNumSub > 0){
+   tweetNumSub = "+" + tweetNumSub;
+ }
  var dateStr = lastData[1][0].getMonth()+1 + "/" + lastData[1][0].getDate();
  var payload = {
    status:dateStr + "のまゆすきツイート数は" + lastData[1][1] + "です．(前日比" + tweetNumSub + ")"
