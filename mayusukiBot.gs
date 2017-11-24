@@ -6,7 +6,7 @@ function routine(){
  var sheet = spreadsheet.getActiveSheet();
  addMayusukiData()
  var lastRow = sheet.getLastRow();
- var lastData = sheet.getRange("A"+(lastRow-1)+":"+"B"+lastRow).getValues();
+ var lastData = sheet.getRange("B"+(lastRow-1)+":"+"C"+lastRow).getValues();
  var tweetNumSub = lastData[1][1] - lastData[0][1];
  var dateStr = lastData[1][0].getMonth()+1 + "/" + lastData[1][0].getDate();
  var payload = {
@@ -19,7 +19,9 @@ function addMayusukiData(){
   var spreadsheet = getMayusukiSheet();
   var sheet = spreadsheet.getActiveSheet();
   auth();
-  var data = getYesterdayMayusukiData();
+  var data = [sheet.getLastRow()];
+  Array.prototype.push.apply(data, getYesterdayMayusukiData()[0]);
+  data = [data];
   sheet.getRange(sheet.getLastRow()+1,1,data.length,data[0].length).setValues(data);
 }
 
@@ -28,7 +30,7 @@ function createMayusukiChartWeekly(){
   var spreadsheet = getMayusukiSheet();
   var sheet = spreadsheet.getActiveSheet();
   var lastRow = sheet.getLastRow();
-  var range = sheet.getRange("A"+(lastRow-6)+":"+"B"+lastRow);
+  var range = sheet.getRange("B"+(lastRow-6)+":"+"C"+lastRow);
   var mayusukiData = range.getValues();
   var weeklyData = Charts.newDataTable()
       .addColumn(Charts.ColumnType.STRING, "日付")
