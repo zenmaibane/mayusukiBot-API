@@ -20,7 +20,7 @@ https://twitter.com/mayusukiCount
 
 
 ## API
-下記リンクをGETで叩くと保存してるまゆすきカウントデータを返す．
+以下のURLをGETアクセスすると保存してるまゆすきカウントデータを返す．形式はJSON
 
 https://script.google.com/macros/s/AKfycbwPDUJ4-EKuSJSptDJBBAqqZK-CNM9_Q4Q5avAdnHxcPHe7Z7A6/exec
 
