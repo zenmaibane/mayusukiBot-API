@@ -1,6 +1,6 @@
 function doGet(e){
   if(!e.parameter.until || !e.parameter.since) {
-    return createJsonContent({"error" :"required parameter is missing"});
+    return createJsonContent(e.parameter.callback, {"error" :"required parameter is missing"});
   }
   sheet = getMayusukiSheet();
   var until = new Date(e.parameter.until);
@@ -13,7 +13,7 @@ function doGet(e){
     return (m["date"] <= until && m["date"] >= since);
   });
   var jsonData = {"data":data}  
-  var content = createJsonContent(jsonData);
+  var content = createJsonContent(e.parameter.callback, jsonData);
   return content;
 }
 
@@ -24,10 +24,13 @@ function parameterEnptyError(){
   return content
 }
 
-function createJsonContent(jsonData){
+function createJsonContent(callback, jsonData){
   var text = JSON.stringify(jsonData, null, 4);
-  var content = ContentService.createTextOutput(text);
-  return content.setMimeType(ContentService.MimeType.JSON);
+  if (callback){
+    return ContentService.createTextOutput(callback + "(" + text + ")").setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }else{
+    return ContentService.createTextOutput(text).setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 //2次元配列をオブジェクト配列に変換する
