@@ -27,17 +27,19 @@ https://script.google.com/macros/s/AKfycbwPDUJ4-EKuSJSptDJBBAqqZK-CNM9_Q4Q5avAdn
 保存しているまゆすきカウントは2017/11/12～このサービスを止めるまでの期間のみ．
 
 ### Required Parameters
-|Name|Description|Example|
-|:-|:-|:-|
-|since|与えられた日付以降にマッチするデータを返す．形式は`YYYY/MM/DD`|2017/11/12|
-|until|与えられた日付以前にマッチするデータを返す．形式は`YYYY/MM/DD`|2017/11/20|
+|Name|Required|Description|Example|
+|:-|:-|:-|:-|
+|since|◯|与えられた日付以降にマッチするデータを返す．形式は`YYYY/MM/DD`|2017/11/12|
+|until|◯|与えられた日付以前にマッチするデータを返す．形式は`YYYY/MM/DD`|2017/11/20|
+|callback||jsonpで呼び出したい場合に使用する．指定した名前のコールバック関数を返す|mayuIsSoCute|
 
-### Example Request
+### Example Request & Response
 `since`に`2017/11/20`，`until`に`2017/11/22`を与えたリクエスト例
 
 https://script.google.com/macros/s/AKfycbwPDUJ4-EKuSJSptDJBBAqqZK-CNM9_Q4Q5avAdnHxcPHe7Z7A6/exec?since=2017/11/20&until=2017/11/22
 
-### Example Response
+レスポンス例
+
 ```javascript
 {
     "data": [
@@ -60,3 +62,35 @@ https://script.google.com/macros/s/AKfycbwPDUJ4-EKuSJSptDJBBAqqZK-CNM9_Q4Q5avAdn
 }
 ```
 
+`since`に`2017/11/12`，`until`に`2017/11/15`，`Callback`に`mayuIsSoCute`を与えたリクエスト例
+
+https://script.google.com/macros/s/AKfycbwPDUJ4-EKuSJSptDJBBAqqZK-CNM9_Q4Q5avAdnHxcPHe7Z7A6/exec?callback=mayuIsSoCute&since=2017/11/12&until=2017/11/15
+
+レスポンス例
+
+```jacascript
+mayuIsSoCute({
+    "data": [
+        {
+            "id": 1,
+            "date": "2017-11-12T00:00:00.000Z",
+            "count": 468
+        },
+        {
+            "id": 2,
+            "date": "2017-11-13T00:00:00.000Z",
+            "count": 290
+        },
+        {
+            "id": 3,
+            "date": "2017-11-14T00:00:00.000Z",
+            "count": 305
+        },
+        {
+            "id": 4,
+            "date": "2017-11-15T00:00:00.000Z",
+            "count": 251
+        }
+    ]
+})
+```
