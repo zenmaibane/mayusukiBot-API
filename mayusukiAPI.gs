@@ -1,21 +1,31 @@
 function doGet(e){
+  if(!e.parameter.until || !e.parameter.since) {
+    return createJsonContent({"error" :"required parameter is missing"});
+  }
   sheet = getMayusukiSheet();
-//  var until = new Date(e.until);
-//  var since = new Date(e.until);
-  var until = new Date(111111111111111111111);
-  var since = new Date("2017/11/12");
-  Logger.log(until)
-//  var data =  sheet.getDataRange().getValues();
-//  data.shift(); 
-//  var columns = ["id", "date", "count"];
-//  data = arraToObject(data, columns);  
-//  var jsonData = {"data":data}
-//  var content = createJsonContent(jsonData);
-//  return content;
+  var until = new Date(e.parameter.until);
+  var since = new Date(e.parameter.since);
+  var data =  sheet.getDataRange().getValues();
+  data.shift(); // カラム名を除外
+  var columns = ["id", "date", "count"];
+  data = arraToObject(data, columns);
+  data = data.filter(function(m){
+    return (m["date"] <= until && m["date"] >= since);
+  });
+  var jsonData = {"data":data}  
+  var content = createJsonContent(jsonData);
+  return content;
+}
+
+
+function parameterEnptyError(){
+   var jsonData = {"error":"parameter is required"};
+   var content = createJsonContent(jsonData);
+  return content
 }
 
 function createJsonContent(jsonData){
-  var text = JSON.stringify(jsonData);
+  var text = JSON.stringify(jsonData, null, 4);
   var content = ContentService.createTextOutput(text);
   return content.setMimeType(ContentService.MimeType.JSON);
 }
