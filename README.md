@@ -10,7 +10,7 @@ https://twitter.com/mayusukiCount
 
 1日の終わりに今日つぶやかれた「まゆすき」が含まれるツイート数をカウントするbot
 
-カウント対象は`"まゆすき" -rt`で引っかかるツイート．佐久間まゆを対象としたまゆすき以外にも引っかかるファジーなまゆすきが対象となる．
+カウント対象は`"まゆすき" -rt`で引っかかるツイート．佐久間まゆを対象としたまゆすき以外にも引っかかるファジーなまゆすきが対象となる．(こればっかりはしょうがない)
 
 1ツイート内に何回「まゆすき」と書いてあってもそれは1まゆすきとする．
 
@@ -26,12 +26,12 @@ https://script.google.com/macros/s/AKfycbwPDUJ4-EKuSJSptDJBBAqqZK-CNM9_Q4Q5avAdn
 
 保存しているまゆすきカウントは2017/11/12～このサービスを止めるまでの期間のみ．
 
-### Required Parameters
+### Parameters
 |Name|Required|Description|Example|
 |:-|:-|:-|:-|
 |since|◯|与えられた日付以降にマッチするデータを返す．形式は`YYYY/MM/DD`|2017/11/12|
 |until|◯|与えられた日付以前にマッチするデータを返す．形式は`YYYY/MM/DD`|2017/11/20|
-|callback||jsonpで呼び出したい場合に使用する．指定した名前のコールバック関数を返す|mayuIsSoCute|
+|callback||JSONPで呼び出したい場合に使用する．指定した名前のコールバック関数を返す|mayuIsSoCute|
 
 ### Example Request & Response
 `since`に`2017/11/20`，`until`に`2017/11/22`を与えたリクエスト例
