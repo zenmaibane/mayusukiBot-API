@@ -26,6 +26,10 @@ https://script.google.com/macros/s/AKfycbwPDUJ4-EKuSJSptDJBBAqqZK-CNM9_Q4Q5avAdn
 
 保存しているまゆすきカウントは2017/11/12～このサービスを止めるまでの期間のみ．
 
+ちなみにこのデータを保存しているスプレッドシートは以下のリンク
+
+https://docs.google.com/spreadsheets/d/1f8WqvUcADdTFOeR0Urk4pvUHdnap9-SABSgkQ6Z807A/edit#gid=0
+
 ### Parameters
 |Name|Required|Description|Example|
 |:-|:-|:-|:-|
