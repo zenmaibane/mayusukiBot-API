@@ -17,13 +17,6 @@ function doGet(e){
   return content;
 }
 
-
-function parameterEnptyError(){
-   var jsonData = {"error":"parameter is required"};
-   var content = createJsonContent(jsonData);
-  return content
-}
-
 function createJsonContent(callback, jsonData){
   var text = JSON.stringify(jsonData, null, 4);
   if (callback){

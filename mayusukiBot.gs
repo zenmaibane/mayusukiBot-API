@@ -14,7 +14,7 @@ function routine(){
  var dateStr = lastData[1][0].getMonth()+1 + "/" + lastData[1][0].getDate();
  var payload = {
    status:dateStr + "のまゆすきツイート数は" + lastData[1][1] + "です．(前日比" + tweetNumSub + ")"
- }
+ } 
  postAccessTwitter("statuses/update", payload);
 }
 
@@ -63,13 +63,6 @@ function createMayusukiChartWeekly(){
  postAccessTwitter("statuses/update", payload);
 }
 
-function createJsonContent(jsonData){
-  var text = JSON.stringify(jsonData)
-  var content = ContentService.createTextOutput(text);
-  content = content.setMimeType(ContentService.MimeType.JSON);
-  return content;
-}
-
 function getMayusukiSheet(){
   return SpreadsheetApp.openById('1f8WqvUcADdTFOeR0Urk4pvUHdnap9-SABSgkQ6Z807A');
 }
@@ -115,8 +108,8 @@ function getTwitterService(){
   .setAccessTokenUrl("https://api.twitter.com/oauth/access_token")
   .setRequestTokenUrl("https://api.twitter.com/oauth/request_token")
   .setAuthorizationUrl("https://api.twitter.com/oauth/authorize")
-  .setConsumerKey("xxxxxxxxxxxxx")
-  .setConsumerSecret("xxxxxxxxxxxxx")
+  .setConsumerKey(ScriptProperties.getProperty("CONSUMER_KEY"))
+  .setConsumerSecret(ScriptProperties.getProperty("CONSUMER_SECRET"))
   .setCallbackFunction("authCallback")
   .setPropertyStore(PropertiesService.getScriptProperties());
 }
